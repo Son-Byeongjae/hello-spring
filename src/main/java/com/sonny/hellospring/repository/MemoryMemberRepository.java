@@ -4,10 +4,13 @@ import com.sonny.hellospring.domain.Member;
 
 import java.util.*;
 
+/**
+ * 동시성 문제가 고려되어 있지 않음, 실무에서는 ConcurrentHashMap, AtomicLong 사용 고려
+ */
 public class MemoryMemberRepository implements MemberRepository {
 
-    private static Map<Long, Member> store = new HashMap<>(); // 실무에서는 동시성 문제때문에 concurrenthashmap사용
-    private static Long sequence = 0L; // 마찬가지로 실무에서는 동시성 문제때문엥 AtomicLong을 사용한다.
+    private static Map<Long, Member> store = new HashMap<>();
+    private static Long sequence = 0L;
 
 
     @Override
@@ -35,5 +38,9 @@ public class MemoryMemberRepository implements MemberRepository {
     public List<Member> findAll() {
         // 자바에서 실무할 때는 List를 많이 쓴다.
         return new ArrayList<>(store.values()); // store에 있는 value들이 List형식으로 반환된다.
+    }
+
+    public void clearStore() {
+        store.clear();
     }
 }
